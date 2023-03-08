@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -11,14 +12,19 @@ public class User {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "username")
+    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов")
+    @NotEmpty(message = "Имя не должно быть пустым")
     private String username;
 
+
     @Column(name = "last_name")
+    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов")
+    @NotEmpty (message = "Фамилия не должна быть пустой")
     private String lastName;
 
     @Column(name = "password")
+    @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
 
     public User() {
