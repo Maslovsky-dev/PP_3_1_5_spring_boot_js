@@ -13,11 +13,9 @@ public class User {
     private Long id;
 
     @Column(name = "username")
-    @Size(min = 2, max = 100)
     private String username;
 
     @Column(name = "last_name")
-    @Size(min = 2, max = 100)
     private String lastName;
 
     @Column(name = "password")
