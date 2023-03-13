@@ -29,6 +29,7 @@
 <!--            </div>-->
 <!--        </form>-->
                 <form name="f" method="post" action="/process_login">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                     <!-- Username input -->
                     <div class="form-outline mb-4">
                         <input type="text" name = "username" id="username" class="form-control"/>
