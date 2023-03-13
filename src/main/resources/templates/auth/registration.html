@@ -23,10 +23,10 @@
 <!--      </div>-->
 <!--      <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>-->
 <!--      <div class="form-floating mb-3">-->
-<!--        <input type="text" class="form-control" id="lastName" th:field="*{lastName}" maxlength="100">-->
-<!--        <label for="lastName">Last name</label>-->
+<!--        <input type="text" class="form-control" id="email" th:field="*{email}" maxlength="100">-->
+<!--        <label for="email">Last name</label>-->
 <!--      </div>-->
-<!--      <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</div>-->
+<!--      <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Last Name Error</div>-->
 
 <!--      <div class="form-floating mb-3">-->
 <!--        <input type="password" class="form-control" id="password" th:field="*{password}" maxlength="100">-->
@@ -44,9 +44,9 @@
       <input type="text" th:field="*{username}" id="username"/>
       <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
       <br/>
-      <label for="lastName">Введите год рождения: </label>
-      <input type="text" th:field="*{lastName}" id="lastName"/>
-      <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Year of birth Error
+      <label for="email">Введите почту: </label>
+      <input type="text" th:field="*{email}" id="email"/>
+      <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email
       </div>
       <br/>
       <label for="password">Введите пароль: </label>

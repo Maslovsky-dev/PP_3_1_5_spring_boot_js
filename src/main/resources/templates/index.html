@@ -16,24 +16,22 @@
             <thead>
             <tr>
                 <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Last Name</th>
+                <th scope="col">UserName</th>
                 <th scope="col">Email</th>
+                <th scope="col">Role</th>
                 <th scope="col">Operations</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user: ${allUsers}">
                 <td th:text="${user.getId()}" style="width: 55px;"/>
-                <td th:text="${user.getFirstName()}"
+                <td th:text="${user.getUsername()}"
                     style="width: 150px; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                    th:title="${user.getFirstName()}"></td>
-                <td th:text="${user.getLastName()}"
-                    style="width: 150px; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
-                    th:title="${user.getLastName()}"></td>
+                    th:title="${user.getUsername()}"></td>
                 <td th:text="${user.getEmail()}"
-                    style="width: 250px; max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                    style="width: 150px; max-width: 150px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
                     th:title="${user.getEmail()}"></td>
+                <td th:text="${user.getRole()}" style="width: 100px;"/>
                 <td>
                     <div>
                         <form th:method="GET" th:action="@{/{id}/edit(id=${user.getId()})}" th:object="${user}"
@@ -49,8 +47,9 @@
             </tr>
             </tbody>
         </table>
-        <input type="button" value="Add"
-               onclick="window.location.href = 'new'"/>
+        <form th:action="@{/logout}" th:method="POST">
+            <input type="submit" value="Logout"/>
+        </form>
     </div>
 </div>
 </body>

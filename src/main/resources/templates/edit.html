@@ -19,13 +19,11 @@
                 <label for="name">Name</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="lastName" th:field="*{lastName}" maxlength="255">
-                <label for="lastName">Last name</label>
+                <input type="text" class="form-control" id="email" th:field="*{email}" maxlength="255">
+                <label for="email">Last name</label>
             </div>
-            <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="email" th:field="*{email}" maxlength="255">
-                <label for="email">Email</label>
-            </div>
+            <input type="hidden" id="password" th:field="*{password}"/>
+            <input type="hidden" id="role" th:field="*{role}"/>
             <button type="submit">Update</button>
         </form>
     </div>

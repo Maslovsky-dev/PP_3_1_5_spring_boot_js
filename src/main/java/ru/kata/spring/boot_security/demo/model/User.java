@@ -18,21 +18,31 @@ public class User {
     private String username;
 
 
-    @Column(name = "last_name")
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов")
-    @NotEmpty (message = "Фамилия не должна быть пустой")
-    private String lastName;
+    @Column(name = "email")
+    @Size(min = 2, max = 100, message = "Почта должно быть от 2 до 100 символов")
+    @NotEmpty (message = "Почта не должна быть пустой")
+    private String email;
 
     @Column(name = "password")
     @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
 
+    @Column(name="role")
+    private String role;
+
     public User() {
     }
 
-    public User(String username, String lastName) {
+    public User(String username, String email) {
         this.username = username;
-        this.lastName = lastName;
+        this.email = email;
+    }
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public Long getId() {
@@ -59,21 +69,22 @@ public class User {
         this.username = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", firstName='" + username + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }
