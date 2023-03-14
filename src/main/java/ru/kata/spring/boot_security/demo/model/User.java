@@ -4,6 +4,8 @@ package ru.kata.spring.boot_security.demo.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -27,8 +29,14 @@ public class User {
     @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
 
-    @Column(name="role")
-    private String role;
+    @ManyToMany (cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_name")
+    )
+    @NotEmpty(message = "Не выбрана ни одна роль")
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -37,12 +45,13 @@ public class User {
         this.username = username;
         this.email = email;
     }
-    public String getRole() {
-        return role;
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -84,7 +93,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
+                ", role='" + roles.toString() + '\'' +
                 '}';
     }
 }

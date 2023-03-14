@@ -6,6 +6,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 
 public class UserDetails implements org.springframework.security.core.userdetails.UserDetails {
 
@@ -17,7 +18,9 @@ public class UserDetails implements org.springframework.security.core.userdetail
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
+        HashSet<GrantedAuthority> authorities = new HashSet<>(user.getRoles().size());
+        user.getRoles().forEach(v -> authorities.add(new SimpleGrantedAuthority(v.getRoleName())));
+        return authorities;
     }
 
     @Override

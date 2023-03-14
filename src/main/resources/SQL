@@ -1,0 +1,27 @@
+CREATE TABLE users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  password VARCHAR(255) NOT NULL
+);
+CREATE TABLE roles (
+  role_name VARCHAR(50) PRIMARY KEY
+);
+CREATE TABLE user_role (
+  user_id BIGINT NOT NULL,
+  role_name VARCHAR(50) NOT NULL,
+  PRIMARY KEY (user_id, role_name),
+  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id),
+  CONSTRAINT fk_role_name FOREIGN KEY (role_name) REFERENCES roles (role_name)
+);
+INSERT INTO roles (role_name) VALUES
+  ('ROLE_USER'),
+  ('ROLE_ADMIN');
+  INSERT INTO users (username, email, password) VALUES
+  ('testuser1', 'testuser1@example.com', 'password1'),
+  ('testuser2', 'testuser2@example.com', 'password2'),
+  ('testuser3', 'testuser3@example.com', 'password3');
+INSERT INTO user_role (user_id, role_name) VALUES
+  (1, 'ROLE_USER'),
+  (2, 'ROLE_USER'),
+  (3, 'ROLE_ADMIN');
