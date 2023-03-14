@@ -24,17 +24,17 @@ public class AuthController {
         this.userValidator = userValidator;
         this.registrationService = registrationService;
     }
-
+    //Запрос на форму для входа в приложение
     @GetMapping(value = "/login")
     public String loginPage() {
         return "auth/login";
     }
-
+    // Запрос на форму для регистрации нового пользователя
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user) {
         return "auth/registration";
     }
-
+    //Обработка запроса на создание нового пользователя, валидация введенных данных
     @PostMapping("/registration")
     public String performRegistration(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         userValidator.validate(user, bindingResult);
