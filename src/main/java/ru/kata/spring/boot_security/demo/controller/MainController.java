@@ -45,7 +45,7 @@ public class MainController {
 	 @GetMapping("/admin")
 	public String adminPage(Model model) {
 		model.addAttribute("allUsers",userService.listUsers());
-		return "admin";
+		return "new_admin";
 	 }
 	//Форма для редактирования пользователя (только для пользователей с ролью ADMIN)
 	@GetMapping (value = "/{id}/edit")
