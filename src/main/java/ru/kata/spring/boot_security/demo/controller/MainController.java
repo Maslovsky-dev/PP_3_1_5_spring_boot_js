@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.security.UserDetails;
 import ru.kata.spring.boot_security.demo.service.UserService;
-import ru.kata.spring.boot_security.demo.util.UserValidator;
 
 import javax.validation.Valid;
 
@@ -18,19 +17,14 @@ import javax.validation.Valid;
 @Controller
 public class MainController {
 
-	private UserService userService;
-	private UserValidator userValidator;
-	@Autowired
-	public MainController(UserService userService, UserValidator userValidator) {
-		this.userService = userService;
-		this.userValidator = userValidator;
-	}
+	private final UserService userService;
 
+	@Autowired
 	public MainController(UserService userService) {
 		this.userService = userService;
 	}
 
-	//Страница пользователя, на ней должны быть данные пользователя TODO
+	//Страница пользователя
 	@GetMapping(value = "/user")
 	 public String userPage(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -45,13 +39,13 @@ public class MainController {
 		model.addAttribute("allUsers",userService.listUsers());
 		return "admin";
 	 }
-	//Форма для редактирования пользователя (только для пользователей с ролью ADMIN) TODO
+	//Форма для редактирования пользователя (только для пользователей с ролью ADMIN)
 	@GetMapping (value = "/{id}/edit")
 	public String edit(Model model, @PathVariable("id") Long id) {
 		model.addAttribute("user",userService.userById(id));
 		return "edit";
 	}
-	// Обработка запроса на изменение данных пользователя (только для пользователей с ролью ADMIN) TODO
+	// Обработка запроса на изменение данных пользователя (только для пользователей с ролью ADMIN)
 	@PatchMapping("/{id}")
 	public  String update(@ModelAttribute("user") @Valid User user,
 						  BindingResult bindingResult) {
@@ -60,7 +54,7 @@ public class MainController {
 		userService.update(user);
 		return "redirect:/admin";
 	}
-	// Обработка запроса на удаление пользователя (только для пользователей с ролью ADMIN) TODO
+	// Обработка запроса на удаление пользователя (только для пользователей с ролью ADMIN)
 	@DeleteMapping("/{id}")
 	public String delete(@PathVariable("id") Long id) {
 		userService.delete(id);
