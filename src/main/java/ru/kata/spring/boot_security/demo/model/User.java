@@ -29,7 +29,8 @@ public class User {
     @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
 
-    @ManyToMany (cascade = CascadeType.MERGE)
+    @ManyToMany (cascade = CascadeType.MERGE,
+            fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),

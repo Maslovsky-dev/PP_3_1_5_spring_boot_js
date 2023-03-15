@@ -28,8 +28,8 @@
             <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
             <br/>
             <label> Roles: </label>
-            <input type="checkbox" th:field="*{role}" th:value="ROLE_USER"/>USER
-            <input type="checkbox" th:field="*{role}" th:value="ROLE_ADMIN"/>ADMIN
+            <input type="checkbox" th:field="*{roles}" th:value="ROLE_USER"/>USER
+            <input type="checkbox" th:field="*{roles}" th:value="ROLE_ADMIN"/>ADMIN
             <br/>
             <input type="submit" value="Update!"/>
         </form>
