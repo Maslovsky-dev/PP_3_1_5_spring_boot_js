@@ -30,13 +30,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //Конфигурируем авторизацию
         http.authorizeRequests()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/","/auth/login","/auth/registration","/error").permitAll()
+                .antMatchers("/","/auth/login","/auth/registration","/error","/hello","/bad").permitAll()
                 .anyRequest().hasAnyRole("USER","ADMIN")
                 .and()
                 .formLogin().loginPage("/auth/login").successHandler(successUserHandler)
                 .loginProcessingUrl("/process_login")
-//                .defaultSuccessUrl("/hello", true)
-                .failureUrl("/auth/login?error")
+                .failureUrl("/bad")
                 .and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login");
     }
@@ -47,7 +46,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Bean
     public PasswordEncoder getPasswordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 }

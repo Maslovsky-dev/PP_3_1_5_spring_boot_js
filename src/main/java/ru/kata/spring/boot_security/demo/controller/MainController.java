@@ -23,6 +23,14 @@ public class MainController {
 	public MainController(UserService userService) {
 		this.userService = userService;
 	}
+	@GetMapping(value = "/hello")
+	public String hello() {
+		return "/hello";
+	}
+	@GetMapping(value = "/bad")
+	public String bad() {
+		return "/bad";
+	}
 
 	//Страница пользователя
 	@GetMapping(value = "/user")
@@ -60,4 +68,5 @@ public class MainController {
 		userService.delete(id);
 		return "redirect:/admin";
 	}
+
 }

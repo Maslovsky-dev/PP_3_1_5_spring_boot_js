@@ -25,7 +25,7 @@ public class UserDetailsImpl implements org.springframework.security.core.userde
 
     @Override
     public String getUsername() {
-        return this.user.getUsername();
+        return this.user.getEmail();
     }
 
     @Override

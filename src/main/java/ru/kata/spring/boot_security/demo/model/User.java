@@ -2,8 +2,7 @@ package ru.kata.spring.boot_security.demo.model;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,18 +13,26 @@ public class User {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "username")
+
     @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов")
     @NotEmpty(message = "Имя не должно быть пустым")
-    private String username;
+    private String firstName;
+
+    @Size(min = 2, max = 100, message = "Фамилия должна быть от 2 до 100 символов")
+    @NotEmpty(message = "Фамилия не должна быть пустым")
+    private String lastName;
+
+    @Min(value = 18, message = "Пользоваться сервисом можно только с 18 лет")
+    @Max(value = 150, message = "Возраст превышает допустимый")
+    @NotNull(message = "Возраст не должен быть пустым")
+    private int age;
 
 
-    @Column(name = "email")
     @Size(min = 2, max = 100, message = "Почта должно быть от 2 до 100 символов")
     @NotEmpty (message = "Почта не должна быть пустой")
     private String email;
 
-    @Column(name = "password")
+
     @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
 
@@ -42,19 +49,6 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email) {
-        this.username = username;
-        this.email = email;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
     public Long getId() {
         return id;
     }
@@ -63,20 +57,28 @@ public class User {
         this.id = id;
     }
 
-    public String getPassword() {
-        return password;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getUsername() {
-        return username;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setUsername(String firstName) {
-        this.username = firstName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     public String getEmail() {
@@ -87,14 +89,32 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + roles.toString() + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 }
