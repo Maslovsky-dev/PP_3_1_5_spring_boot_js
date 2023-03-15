@@ -30,6 +30,9 @@
             <label> Roles: </label>
             <input type="checkbox" th:field="*{roles}" th:value="ROLE_USER"/>USER
             <input type="checkbox" th:field="*{roles}" th:value="ROLE_ADMIN"/>ADMIN
+            <div style="color:red" th:if="${#fields.hasErrors('roles')}">
+                <span th:each="err : ${#fields.errors('roles')}" th:text="${err}"></span>
+            </div>
             <br/>
             <input type="submit" value="Update!"/>
         </form>

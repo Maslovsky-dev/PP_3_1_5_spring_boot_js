@@ -40,7 +40,6 @@ public class AuthController {
     //Обработка запроса на создание нового пользователя, валидация введенных данных
     @PostMapping("/registration")
     public String performRegistration(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        System.out.println(user);
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors())
             return "/auth/registration";

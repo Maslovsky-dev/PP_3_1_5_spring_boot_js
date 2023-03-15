@@ -5,16 +5,27 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.security.UserDetails;
 import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.util.UserValidator;
+
+import javax.validation.Valid;
 
 
 @Controller
 public class MainController {
-	@Autowired
+
 	private UserService userService;
+	private UserValidator userValidator;
+	@Autowired
+	public MainController(UserService userService, UserValidator userValidator) {
+		this.userService = userService;
+		this.userValidator = userValidator;
+	}
+
 	public MainController(UserService userService) {
 		this.userService = userService;
 	}
@@ -42,8 +53,10 @@ public class MainController {
 	}
 	// Обработка запроса на изменение данных пользователя (только для пользователей с ролью ADMIN) TODO
 	@PatchMapping("/{id}")
-	public  String update(@ModelAttribute("user") User user) {
-		System.out.println("Controller: " + user);
+	public  String update(@ModelAttribute("user") @Valid User user,
+						  BindingResult bindingResult) {
+		if (bindingResult.hasErrors())
+			return "/edit";
 		userService.update(user);
 		return "redirect:/admin";
 	}
