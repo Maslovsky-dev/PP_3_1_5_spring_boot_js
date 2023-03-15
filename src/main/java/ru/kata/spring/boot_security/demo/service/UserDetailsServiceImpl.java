@@ -2,18 +2,20 @@ package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
 
 import java.util.Optional;
 
 @Service
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
     @Autowired
-    public UserDetailsService(UserRepository userRepository) {
+    public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -23,6 +25,6 @@ public class UserDetailsService implements org.springframework.security.core.use
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("User not found!");
         }
-        return new ru.kata.spring.boot_security.demo.security.UserDetails(user.get());
+        return new UserDetailsImpl(user.get());
     }
 }

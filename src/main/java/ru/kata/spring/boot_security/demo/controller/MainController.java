@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.security.UserDetails;
+import ru.kata.spring.boot_security.demo.security.UserDetailsImpl;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.validation.Valid;
@@ -28,8 +28,8 @@ public class MainController {
 	@GetMapping(value = "/user")
 	 public String userPage(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails)authentication.getPrincipal();
-		model.addAttribute(userDetails.getUser());
+		UserDetailsImpl userDetailsImpl = (UserDetailsImpl)authentication.getPrincipal();
+		model.addAttribute(userDetailsImpl.getUser());
 		return "user";
 	 }
 
