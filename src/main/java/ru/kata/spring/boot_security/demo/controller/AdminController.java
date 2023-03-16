@@ -32,6 +32,7 @@ public class AdminController {
 		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		 User user = (User) authentication.getPrincipal();
 		 model.addAttribute("user",user);
+		 model.addAttribute("newUser",new User());
 		model.addAttribute("allUsers",userRepository.findAll());
 		return "new_admin";
 	 }

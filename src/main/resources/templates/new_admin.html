@@ -101,7 +101,7 @@
                                             <td style="width: 150px">
                                                 <form th:method="DELETE" th:action="@{/{id}(id=${user.getId()})}"
                                                       th:object="${user}">
-                                                    <button type="button" class="btn btn-danger" onclick="openModal()">
+                                                    <button type="submit" class="btn btn-danger">
                                                         Delete
                                                     </button>
                                                 </form>
@@ -111,6 +111,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                             <div class="card">
                                 <div class="card-header">
@@ -118,36 +119,45 @@
                                 </div>
                                 <div class="card-body" style="text-align: center;">
                                     <div style="width: 350px; margin: 0 auto;">
-                                        <form th:method="POST" th:action="@{/auth/registration}" th:object="${user}">
+                                        <form th:method="POST" th:action="@{/auth/registration}" th:object="${newUser}">
                                             <label for="firstName" class="form-label" style="font-weight: bold;">
                                                 First name</label>
-                                            <input type="text" class="form-control" id="firstName">
+                                            <input type="text" class="form-control" th:field="*{firstName}" id="firstName">
+                                            <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</div>
+
                                             <br>
                                             <label for="lastName" class="form-label" style="font-weight: bold;">
                                                 Last name</label>
-                                            <input type="text" class="form-control" id="lastName">
+                                            <input type="text" class="form-control" th:field="*{lastName}" id="lastName">
+                                            <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Error</div>
                                             <br>
                                             <label for="age" class="form-label" style="font-weight: bold;">
                                                 Age</label>
-                                            <input type="number" class="form-control" id="age">
+                                            <input type="number" class="form-control" th:field="*{age}" id="age">
+                                            <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+
                                             <br>
                                             <label for="email" class="form-label" style="font-weight: bold;">
                                                 Email</label>
-                                            <input type="email" class="form-control" id="Email">
+                                            <input type="text" class="form-control" th:field="*{email}" id="Email">
+                                            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+
                                             <br>
                                             <label for="password" class="form-label" style="font-weight: bold;">
                                                 Password</label>
-                                            <input type="password" class="form-control" id="Password">
+                                            <input type="password" class="form-control" th:field="*{password}" id="Password">
+                                            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+
                                             <br>
                                             <label class="form-label" style="font-weight: bold;">
                                                 Role</label>
                                             <div class="form-group">
-                                                <select class="form-control" id="roleSelect"  style="height: 60px" multiple>
-                                                    <option>ROLE_USER</option>
-                                                    <option>ROLE_ADMIN</option>
+                                                <select class="form-control" id="roleSelect" style="height: 60px" multiple  th:field="*{roles}">
+                                                    <option value="ROLE_USER">USER</option>
+                                                    <option value="ROLE_USER">ADMIN</option>
                                                 </select>
                                             </div>
-                                            <button type="button" class="btn btn-success" style="font-size: 20px">
+                                            <button type="submit" class="btn btn-success" style="font-size: 20px">
                                                 Add new user
                                             </button>
                                         </form>
