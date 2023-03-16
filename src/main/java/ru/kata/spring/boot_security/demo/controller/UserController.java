@@ -11,15 +11,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 @Controller
 public class UserController {
 
-	@GetMapping(value = "/hello")
-	public String hello() {
-		return "/hello";
-	}
-	@GetMapping(value = "/bad")
-	public String bad() {
-		return "/bad";
-	}
-
 	//Страница пользователя
 	@GetMapping(value = "/user")
 	 public String userPage(Model model) {
