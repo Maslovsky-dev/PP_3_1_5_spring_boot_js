@@ -44,7 +44,7 @@ public class AuthController {
         userValidator.validate(user, bindingResult);
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.toString());
-            return "redirect:/admin";
+            return "/new_admin";
         }
         registrationService.register(user);
         return "redirect:/admin";
