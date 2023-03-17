@@ -37,10 +37,16 @@ public class AdminController {
 		return "new_admin";
 	 }
 	//Форма для редактирования пользователя (только для пользователей с ролью ADMIN)
+//	@GetMapping (value = "/{id}/edit")
+//	public String edit(Model model, @PathVariable("id") Long id) {
+//		model.addAttribute("user",userRepository.findById(id).get());
+//		return "edit";
+//	}
 	@GetMapping (value = "/{id}/edit")
 	public String edit(Model model, @PathVariable("id") Long id) {
+		System.out.println(id +" It's Ok");
 		model.addAttribute("user",userRepository.findById(id).get());
-		return "edit";
+		return "modal1";
 	}
 	// Обработка запроса на изменение данных пользователя (только для пользователей с ролью ADMIN)
 	@PatchMapping("/{id}")
@@ -57,6 +63,15 @@ public class AdminController {
 	public String delete(@PathVariable("id") Long id) {
 		userRepository.deleteById(id);
 		return "redirect:/admin";
+	}
+	@GetMapping("/modals/edit")
+	public String modalEdit() {
+		System.out.println("It Ok");
+		return "modal1";
+	}
+	@GetMapping("/modals/delete")
+	public String modalDelete() {
+		return "modal2";
 	}
 
 }

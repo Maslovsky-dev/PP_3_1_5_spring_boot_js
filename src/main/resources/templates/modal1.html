@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="card-body" style="text-align: center;">
+    <div style="width: 350px; margin: 0 auto;">
+        <form th:method="PATCH" th:action="@{/{id}(id=${user.getId()})}" th:object="${user}">
+            <label for="firstName" class="form-label" style="font-weight: bold;">
+                First name</label>
+            <input type="text" class="form-control" th:field="*{firstName}" id="firstName">
+            <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</div>
+
+            <br>
+            <label for="lastName" class="form-label" style="font-weight: bold;">
+                Last name</label>
+            <input type="text" class="form-control" th:field="*{lastName}" id="lastName">
+            <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Error</div>
+            <br>
+            <label for="age" class="form-label" style="font-weight: bold;">
+                Age</label>
+            <input type="number" class="form-control" th:field="*{age}" id="age">
+            <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+
+            <br>
+            <label for="email" class="form-label" style="font-weight: bold;">
+                Email</label>
+            <input type="text" class="form-control" th:field="*{email}" id="Email">
+            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+
+            <br>
+            <label for="password" class="form-label" style="font-weight: bold;">
+                Password</label>
+            <input type="password" class="form-control" th:field="*{password}" id="Password">
+            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+
+            <br>
+            <label class="form-label" style="font-weight: bold;">
+                Role</label>
+            <div class="form-group">
+                <select class="form-control" id="roleSelect" style="height: 60px" multiple  th:field="*{roles}">
+                    <option value="ROLE_USER">USER</option>
+                    <option value="ROLE_ADMIN">ADMIN</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success" style="font-size: 20px">
+                Add new user
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -7,6 +7,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 
     <!-- Bootstrap JavaScript -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -91,13 +92,27 @@
                                             <td th:text="${user.roles}"
                                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
                                             <td style="width: 100px">
-                                                <form th:method="GET" th:action="@{/{id}/edit(id=${user.getId()})}"
-                                                      th:object="${user}"
-                                                      style=" width: 50px">
-                                                    <button type="button" class="btn btn-info" onclick="openModal()">
-                                                        Edit
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">
+                                                    Edit
+                                                </button>
+                                                <script th:inline="javascript">
+                                                    $(document).ready(function () {
+                                                        $('#editModal').on('show.bs.modal', function () {
+                                                            var id = [[${user.id}]];
+                                                            $.get("/" + id + "/edit", function (data) {
+                                                                $('#editModal').find('.modal-body').html(data);
+                                                            })
+                                                        });
+                                                    });
+                                                </script>
+                                                Note: In this example, I assumed that id is a variable passed to the Thymeleaf template context. If it's not the case, you should replace [[${id}]] with the appropriate expression that evaluates to the id value.
+
+
+
+
+
+
+
                                             <td style="width: 150px">
                                                 <form th:method="DELETE" th:action="@{/{id}(id=${user.getId()})}"
                                                       th:object="${user}">
@@ -204,6 +219,25 @@
         </div>
     </div>
 </div>
+
+
+
+<th:block th:replace="_modals :: modal('editModal')">modal</th:block>
+<th:block th:replace="_modals :: modal('exampleModal2')">modal</th:block>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+<script>
+    $('#editModal').on('show.bs.modal', function () {
+        $.get("/{id}/edit", function (data) {
+            $('#editModal').find('.modal-body').html(data);
+        })
+    });
+</script>
+
+
 </body>
 </html>
 
