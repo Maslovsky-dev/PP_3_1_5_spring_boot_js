@@ -22,8 +22,9 @@
 <body>
 <form th:action="@{/logout}" th:method="POST">
     <div style="background-color: darkgrey; padding: 10px;">
-        <span style="font-weight: bold; font-size: 18px;" th:text="${authUser.email}+' with roles: '+${authUser.roles}"></span>
-
+        <span style="font-weight: bold; font-size: 18px;" th:text="${authUser.email}+' with roles:'"></span>
+        <span th:if="${#strings.contains(authUser.roles, 'ROLE_ADMIN')}"> ADMIN </span>
+        <span th:if="${#strings.contains(authUser.roles, 'ROLE_USER')}"> USER </span>
         <button type="submit" class="btn btn-link text-muted" style="float: right;">Logout</button>
     </div>
 </form>
@@ -89,9 +90,7 @@
                                                 style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
                                             <td th:text="${userInTable.Email}"
                                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                                            <td>
-<!--                                                th:text="${userInTable.roles}"-->
-<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-->
+                                            <td style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                                 <span th:if="${#strings.contains(userInTable.roles, 'ROLE_ADMIN')}">ADMIN </span>
                                                 <span th:if="${#strings.contains(userInTable.roles, 'ROLE_USER')}">USER </span>
                                             </td>
@@ -234,8 +233,9 @@
                                 style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
                             <td th:text="${authUser.Email}"
                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                            <td th:text="${authUser.roles}"
-                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                            <td style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                            <span th:if="${#strings.contains(authUser.roles, 'ROLE_ADMIN')}">ADMIN </span>
+                            <span th:if="${#strings.contains(authUser.roles, 'ROLE_USER')}">USER </span>
                             </tbody>
                         </table>
                     </div>

@@ -45,12 +45,12 @@ public class AdminController {
 	@GetMapping (value = "/{id}/edit")
 	public String edit(Model model, @PathVariable("id") Long id) {
 		model.addAttribute("editUser",userRepository.findById(id).get());
-		return "modal1";
+		return "editModal";
 	}
 	@GetMapping (value = "/{id}/delete")
 	public String delete(Model model, @PathVariable("id") Long id) {
 		model.addAttribute("deleteUser",userRepository.findById(id).get());
-		return "modal2";
+		return "deleteModal";
 	}
 	// Обработка запроса на изменение данных пользователя (только для пользователей с ролью ADMIN)
 	@PatchMapping("/{id}")
