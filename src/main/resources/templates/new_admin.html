@@ -89,8 +89,12 @@
                                                 style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
                                             <td th:text="${userInTable.Email}"
                                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                                            <td th:text="${userInTable.roles}"
-                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                                            <td>
+<!--                                                th:text="${userInTable.roles}"-->
+<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-->
+                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_ADMIN')}">ADMIN </span>
+                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_USER')}">USER </span>
+                                            </td>
                                             <td style="width: 100px">
                                                 <button type="button" class="btn btn-info" data-toggle="modal"
                                                         data-target="#editModal"
@@ -108,7 +112,6 @@
                                                         });
                                                     });
                                                 </script>
-
 
                                             <td style="width: 150px">
 
