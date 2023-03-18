@@ -31,7 +31,7 @@ public class AdminController {
 	public String adminPage(Model model) {
 		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		 User user = (User) authentication.getPrincipal();
-		 model.addAttribute("user",user);
+		 model.addAttribute("authUser",user);
 		 model.addAttribute("newUser",new User());
 		model.addAttribute("allUsers",userRepository.findAll());
 		return "new_admin";
@@ -44,9 +44,13 @@ public class AdminController {
 //	}
 	@GetMapping (value = "/{id}/edit")
 	public String edit(Model model, @PathVariable("id") Long id) {
-		System.out.println(id +" It's Ok");
-		model.addAttribute("user",userRepository.findById(id).get());
+		model.addAttribute("editUser",userRepository.findById(id).get());
 		return "modal1";
+	}
+	@GetMapping (value = "/{id}/delete")
+	public String delete(Model model, @PathVariable("id") Long id) {
+		model.addAttribute("deleteUser",userRepository.findById(id).get());
+		return "modal2";
 	}
 	// Обработка запроса на изменение данных пользователя (только для пользователей с ролью ADMIN)
 	@PatchMapping("/{id}")
@@ -63,15 +67,6 @@ public class AdminController {
 	public String delete(@PathVariable("id") Long id) {
 		userRepository.deleteById(id);
 		return "redirect:/admin";
-	}
-	@GetMapping("/modals/edit")
-	public String modalEdit() {
-		System.out.println("It Ok");
-		return "modal1";
-	}
-	@GetMapping("/modals/delete")
-	public String modalDelete() {
-		return "modal2";
 	}
 
 }

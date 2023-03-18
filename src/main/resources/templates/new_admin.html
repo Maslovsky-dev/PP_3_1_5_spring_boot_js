@@ -22,7 +22,7 @@
 <body>
 <form th:action="@{/logout}" th:method="POST">
     <div style="background-color: darkgrey; padding: 10px;">
-        <span style="font-weight: bold; font-size: 18px;" th:text="${user.email}+' with roles: '+${user.roles}"></span>
+        <span style="font-weight: bold; font-size: 18px;" th:text="${authUser.email}+' with roles: '+${authUser.roles}"></span>
 
         <button type="submit" class="btn btn-link text-muted" style="float: right;">Logout</button>
     </div>
@@ -79,47 +79,55 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="user: ${allUsers}">
-                                            <td th:text="${user.id}" style="width: 100px;"/>
-                                            <td th:text="${user.firstName}"
+                                        <tr th:each="userInTable: ${allUsers}">
+                                            <td th:text="${userInTable.id}" style="width: 100px;"/>
+                                            <td th:text="${userInTable.firstName}"
                                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                                            <td th:text="${user.lastName}"
+                                            <td th:text="${userInTable.lastName}"
                                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                                            <td th:text="${user.age}"
+                                            <td th:text="${userInTable.age}"
                                                 style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                                            <td th:text="${user.Email}"
+                                            <td th:text="${userInTable.Email}"
                                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                                            <td th:text="${user.roles}"
+                                            <td th:text="${userInTable.roles}"
                                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
                                             <td style="width: 100px">
-                                                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">
+                                                <button type="button" class="btn btn-info" data-toggle="modal"
+                                                        data-target="#editModal"
+                                                        th:data-user-id="${userInTable.id}">
                                                     Edit
                                                 </button>
-                                                <script th:inline="javascript">
+                                                <script>
                                                     $(document).ready(function () {
-                                                        $('#editModal').on('show.bs.modal', function () {
-                                                            var id = [[${user.id}]];
+                                                        $('#editModal').on('show.bs.modal', function (event) {
+                                                            var button = $(event.relatedTarget); // Button that triggered the modal
+                                                            var id = button.data('user-id'); // Extract user id from data attribute
                                                             $.get("/" + id + "/edit", function (data) {
                                                                 $('#editModal').find('.modal-body').html(data);
                                                             })
                                                         });
                                                     });
                                                 </script>
-                                                Note: In this example, I assumed that id is a variable passed to the Thymeleaf template context. If it's not the case, you should replace [[${id}]] with the appropriate expression that evaluates to the id value.
-
-
-
-
-
 
 
                                             <td style="width: 150px">
-                                                <form th:method="DELETE" th:action="@{/{id}(id=${user.getId()})}"
-                                                      th:object="${user}">
-                                                    <button type="submit" class="btn btn-danger">
-                                                        Delete
-                                                    </button>
-                                                </form>
+
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                        data-target="#deleteModal"
+                                                        th:data-user-id="${userInTable.id}">
+                                                    Delete
+                                                </button>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        $('#deleteModal').on('show.bs.modal', function (event) {
+                                                            var button = $(event.relatedTarget); // Button that triggered the modal
+                                                            var id = button.data('user-id'); // Extract user id from data attribute
+                                                            $.get("/" + id + "/delete", function (data) {
+                                                                $('#deleteModal').find('.modal-body').html(data);
+                                                            })
+                                                        });
+                                                    });
+                                                </script>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -137,37 +145,51 @@
                                         <form th:method="POST" th:action="@{/auth/registration}" th:object="${newUser}">
                                             <label for="firstName" class="form-label" style="font-weight: bold;">
                                                 First name</label>
-                                            <input type="text" class="form-control" th:field="*{firstName}" id="firstName">
-                                            <div style="color:red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">FirstName Error</div>
+                                            <input type="text" class="form-control" th:field="*{firstName}"
+                                                   id="firstName">
+                                            <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
+                                                 th:errors="*{firstName}">FirstName Error
+                                            </div>
 
                                             <br>
                                             <label for="lastName" class="form-label" style="font-weight: bold;">
                                                 Last name</label>
-                                            <input type="text" class="form-control" th:field="*{lastName}" id="lastName">
-                                            <div style="color:red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Error</div>
+                                            <input type="text" class="form-control" th:field="*{lastName}"
+                                                   id="lastName">
+                                            <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
+                                                 th:errors="*{lastName}">Last Error
+                                            </div>
                                             <br>
                                             <label for="age" class="form-label" style="font-weight: bold;">
                                                 Age</label>
                                             <input type="number" class="form-control" th:field="*{age}" id="age">
-                                            <div style="color:red" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error</div>
+                                            <div style="color:red" th:if="${#fields.hasErrors('age')}"
+                                                 th:errors="*{age}">Age Error
+                                            </div>
 
                                             <br>
                                             <label for="email" class="form-label" style="font-weight: bold;">
                                                 Email</label>
                                             <input type="text" class="form-control" th:field="*{email}" id="Email">
-                                            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+                                            <div style="color:red" th:if="${#fields.hasErrors('email')}"
+                                                 th:errors="*{email}">Email Error
+                                            </div>
 
                                             <br>
                                             <label for="password" class="form-label" style="font-weight: bold;">
                                                 Password</label>
-                                            <input type="password" class="form-control" th:field="*{password}" id="Password">
-                                            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+                                            <input type="password" class="form-control" th:field="*{password}"
+                                                   id="Password">
+                                            <div style="color:red" th:if="${#fields.hasErrors('password')}"
+                                                 th:errors="*{password}">Password Error
+                                            </div>
 
                                             <br>
                                             <label class="form-label" style="font-weight: bold;">
                                                 Role</label>
                                             <div class="form-group">
-                                                <select class="form-control" id="roleSelect" style="height: 60px" multiple  th:field="*{roles}">
+                                                <select class="form-control" id="roleSelect" style="height: 60px"
+                                                        multiple th:field="*{roles}">
                                                     <option value="ROLE_USER">USER</option>
                                                     <option value="ROLE_ADMIN">ADMIN</option>
                                                 </select>
@@ -200,16 +222,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <td th:text="${user.id}" style="width: 100px;"/>
-                            <td th:text="${user.firstName}"
+                            <td th:text="${authUser.id}" style="width: 100px;"/>
+                            <td th:text="${authUser.firstName}"
                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                            <td th:text="${user.lastName}"
+                            <td th:text="${authUser.lastName}"
                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                            <td th:text="${user.age}"
+                            <td th:text="${authUser.age}"
                                 style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                            <td th:text="${user.Email}"
+                            <td th:text="${authUser.Email}"
                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
-                            <td th:text="${user.roles}"
+                            <td th:text="${authUser.roles}"
                                 style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
                             </tbody>
                         </table>
@@ -221,21 +243,20 @@
 </div>
 
 
-
 <th:block th:replace="_modals :: modal('editModal')">modal</th:block>
-<th:block th:replace="_modals :: modal('exampleModal2')">modal</th:block>
+<th:block th:replace="_modals :: modal('deleteModal')">modal</th:block>
 
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
-<script>
-    $('#editModal').on('show.bs.modal', function () {
-        $.get("/{id}/edit", function (data) {
-            $('#editModal').find('.modal-body').html(data);
-        })
-    });
-</script>
+<!--<script>-->
+<!--    $('#editModal').on('show.bs.modal', function () {-->
+<!--        $.get("/{id}/edit", function (data) {-->
+<!--            $('#editModal').find('.modal-body').html(data);-->
+<!--        })-->
+<!--    });-->
+<!--</script>-->
 
 
 </body>
