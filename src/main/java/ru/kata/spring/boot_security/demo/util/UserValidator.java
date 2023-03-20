@@ -28,6 +28,6 @@ public class UserValidator implements Validator {
         } catch (UsernameNotFoundException ignored) {
             return; //все ок; пользователь найден
         }
-        errors.rejectValue("email","","Человек с таким именем уже существует");
+        errors.rejectValue("email","","Человек с такой почтой уже существует");
     }
 }
