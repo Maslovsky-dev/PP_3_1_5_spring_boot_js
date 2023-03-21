@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
     import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repository.UserRepository;
+import ru.kata.spring.boot_security.demo.util.UserNotFoundException;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -26,8 +27,9 @@ public class UserServiceImpl implements UserService {
     }
     @Transactional
     @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        Optional<User> foundUser = userRepository.findById(id);
+        return foundUser.orElseThrow(UserNotFoundException::new);
     }
     @Transactional
     @Override
