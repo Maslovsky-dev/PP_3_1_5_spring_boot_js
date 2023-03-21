@@ -7,12 +7,14 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserDetailsServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
+
 @Component
 public class UserValidator implements Validator {
-    private final UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetails;
     @Autowired
-    public UserValidator(UserDetailsServiceImpl userDetailsService) {
-        this.userDetailsService = userDetailsService;
+    public UserValidator(UserDetailsServiceImpl userDetails) {
+        this.userDetails = userDetails;
     }
 
     @Override
@@ -24,7 +26,7 @@ public class UserValidator implements Validator {
     public void validate(Object target, Errors errors) {
         User user = (User)target;
         try {
-            userDetailsService.loadUserByUsername(user.getEmail());
+            userDetails.loadUserByUsername(user.getEmail());
         } catch (UsernameNotFoundException ignored) {
             return; //все ок; пользователь найден
         }
