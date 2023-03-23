@@ -4,10 +4,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,9 +19,12 @@ public class UserDTO {
     @Size(min = 2, max = 30, message = "Name wrong size")
     private String lastName;
 
-    @Min(value = 1, message = "Age > 0")
+    @Min(value = 18, message = "Age > 18")
+    @Max(value = 150, message = "Age < 150")
+    @NotNull(message = "Age should be not empty")
     private int age;
-    @Email
+
+    @Size(min = 2, max = 100, message = "Email size error")
     @NotEmpty(message = "Email should be not empty")
     private String email;
 

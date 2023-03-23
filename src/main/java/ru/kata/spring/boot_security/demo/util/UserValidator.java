@@ -27,8 +27,9 @@ public class UserValidator implements Validator {
         try {
             userDetails.loadUserByUsername(user.getEmail());
         } catch (UsernameNotFoundException ignored) {
-            return; //все ок; пользователь найден
+            return; //Если пользователь с такой почтой не найден, то метод прерывается
         }
+        // Иначе добавляет сообщение об ошибке в поле "email"
         errors.rejectValue("email","","Человек с такой почтой уже существует");
     }
 }

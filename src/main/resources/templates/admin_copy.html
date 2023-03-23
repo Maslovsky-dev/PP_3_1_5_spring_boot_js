@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+<form th:action="@{/logout}" th:method="POST">
+    <div style="background-color: darkgrey; padding: 10px;">
+        <span style="font-weight: bold; font-size: 18px;" th:text="${authUser.email}+' with roles:'"></span>
+        <span th:if="${#strings.contains(authUser.roles, 'ROLE_ADMIN')}"> ADMIN </span>
+        <span th:if="${#strings.contains(authUser.roles, 'ROLE_USER')}"> USER </span>
+        <button type="submit" class="btn btn-link text-muted" style="float: right;">Logout</button>
+    </div>
+</form>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left Side -->
+        <div class="col-lg-2 col-md-2 col-sm-2 bg-white">
+            <ul class="nav nav-pills flex-column mt-3">
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="pill" href="#admin">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="pill" href="#user">User</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right Side -->
+        <div class="col-lg-10 col-md-10 col-sm-10 bg-light">
+            <!--            <h1 class="mt-3">User Panel</h1>-->
+            <div class="tab-content mt-3">
+                <div id="admin" class="tab-pane fade show active">
+                    <h3>Admin panel</h3>
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="tab1-tab" data-toggle="tab" href="#tab1" role="tab"
+                               aria-controls="tab1" aria-selected="true">Users table</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab2-tab" data-toggle="tab" href="#tab2" role="tab"
+                               aria-controls="tab2" aria-selected="false">Add user</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="myTabContent">
+                        <div id="tab1" role="tabpanel" aria-labelledby="tab1-tab" th:class="${allUsersTab}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>All users</h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover" style="width: 1200px;">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Age</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="userInTable: ${allUsers}">
+                                            <td th:text="${userInTable.id}" style="width: 100px;"/>
+                                            <td th:text="${userInTable.firstName}"
+                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                                            <td th:text="${userInTable.lastName}"
+                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                                            <td th:text="${userInTable.age}"
+                                                style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                                            <td th:text="${userInTable.Email}"
+                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                                            <td style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_ADMIN')}">ADMIN </span>
+                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_USER')}">USER </span>
+                                            </td>
+                                            <td style="width: 100px">
+                                                <button type="button" class="btn btn-info" data-toggle="modal"
+                                                        data-target="#editModal"
+                                                        th:data-user-id="${userInTable.id}">
+                                                    Edit
+                                                </button>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        $('#editModal').on('show.bs.modal', function (event) {
+                                                            var button = $(event.relatedTarget); // Button that triggered the modal
+                                                            var id = button.data('user-id'); // Extract user id from data attribute
+                                                            $.get("/" + id + "/edit", function (data) {
+                                                                $('#editModal').find('.modal-body').html(data);
+                                                            })
+                                                        });
+                                                    });
+                                                </script>
+
+                                            <td style="width: 150px">
+
+                                                <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                        data-target="#deleteModal"
+                                                        th:data-user-id="${userInTable.id}">
+                                                    Delete
+                                                </button>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        $('#deleteModal').on('show.bs.modal', function (event) {
+                                                            var button = $(event.relatedTarget); // Button that triggered the modal
+                                                            var id = button.data('user-id'); // Extract user id from data attribute
+                                                            $.get("/" + id + "/delete", function (data) {
+                                                                $('#deleteModal').find('.modal-body').html(data);
+                                                            })
+                                                        });
+                                                    });
+                                                </script>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="tab2" role="tabpanel" aria-labelledby="tab2-tab" th:class="${addNewUserTab}">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Add new user</h5>
+                                </div>
+                                <div class="card-body" style="text-align: center;">
+                                    <div style="width: 350px; margin: 0 auto;">
+                                        <form th:method="POST" th:action="@{/registration}" th:object="${newUser}">
+                                            <label for="firstName" class="form-label" style="font-weight: bold;">
+                                                First name</label>
+                                            <input type="text" class="form-control" th:field="*{firstName}"
+                                                   id="firstName">
+                                            <div style="color:red" th:if="${#fields.hasErrors('firstName')}"
+                                                 th:errors="*{firstName}">FirstName Error
+                                            </div>
+
+                                            <br>
+                                            <label for="lastName" class="form-label" style="font-weight: bold;">
+                                                Last name</label>
+                                            <input type="text" class="form-control" th:field="*{lastName}"
+                                                   id="lastName">
+                                            <div style="color:red" th:if="${#fields.hasErrors('lastName')}"
+                                                 th:errors="*{lastName}">Last Error
+                                            </div>
+                                            <br>
+                                            <label for="age" class="form-label" style="font-weight: bold;">
+                                                Age</label>
+                                            <input type="number" class="form-control" th:field="*{age}" id="age">
+                                            <div style="color:red" th:if="${#fields.hasErrors('age')}"
+                                                 th:errors="*{age}">Age Error
+                                            </div>
+
+                                            <br>
+                                            <label for="email" class="form-label" style="font-weight: bold;">
+                                                Email</label>
+                                            <input type="text" class="form-control" th:field="*{email}" id="Email">
+                                            <div style="color:red" th:if="${#fields.hasErrors('email')}"
+                                                 th:errors="*{email}">Email Error
+                                            </div>
+
+                                            <br>
+                                            <label for="password" class="form-label" style="font-weight: bold;">
+                                                Password</label>
+                                            <input type="password" class="form-control" th:field="*{password}"
+                                                   id="Password">
+                                            <div style="color:red" th:if="${#fields.hasErrors('password')}"
+                                                 th:errors="*{password}">Password Error
+                                            </div>
+
+                                            <br>
+                                            <label class="form-label" style="font-weight: bold;">
+                                                Role</label>
+                                            <div class="form-group">
+                                                <select class="form-control" id="roleSelect" style="height: 60px"
+                                                        multiple th:field="*{roles}">
+                                                    <option value="ROLE_USER">USER</option>
+                                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                                </select>
+                                            </div>
+                                            <button type="submit" class="btn btn-success" style="font-size: 20px">
+                                                Add new user
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="user" class="tab-pane fade">
+                    <h3>User information-page</h3>
+                    <div class="card-header">
+                        <h5>About user</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover" style="width: 1000px;">
+                            <thead>
+                            <tr>
+                                <th scope="col">Id</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Age</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Role</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <td th:text="${authUser.id}" style="width: 100px;"/>
+                            <td th:text="${authUser.firstName}"
+                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                            <td th:text="${authUser.lastName}"
+                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                            <td th:text="${authUser.age}"
+                                style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                            <td th:text="${authUser.Email}"
+                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                            <td style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>
+                            <span th:if="${#strings.contains(authUser.roles, 'ROLE_ADMIN')}">ADMIN </span>
+                            <span th:if="${#strings.contains(authUser.roles, 'ROLE_USER')}">USER </span>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:replace="_modals :: modal('editModal')">modal</th:block>
+<th:block th:replace="_modals :: modal('deleteModal')">modal</th:block>
+
+<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+</body>
+</html>
+
+

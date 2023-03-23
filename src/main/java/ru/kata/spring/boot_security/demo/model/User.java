@@ -17,12 +17,12 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов")
     @NotEmpty(message = "Имя не должно быть пустым")
+    @Size(min = 2, max = 30, message = "Имя должно быть от 2 до 100 символов")
     private String firstName;
 
-    @Size(min = 2, max = 100, message = "Фамилия должна быть от 2 до 100 символов")
     @NotEmpty(message = "Фамилия не должна быть пустым")
+    @Size(min = 2, max = 30, message = "Фамилия должна быть от 2 до 100 символов")
     private String lastName;
 
     @Min(value = 18, message = "Пользоваться сервисом можно только с 18 лет")
