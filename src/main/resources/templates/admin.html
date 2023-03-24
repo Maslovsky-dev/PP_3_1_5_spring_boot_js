@@ -20,7 +20,7 @@
 
 </head>
 <body>
-<form >
+<form>
     <div style="background-color: darkgrey; padding: 10px;">
         <span style="font-weight: bold; font-size: 18px;"> Info about auth user</span>
         <button type="submit" class="btn btn-link text-muted" style="float: right;">Logout</button>
@@ -79,38 +79,57 @@
                                             <th scope="col">Delete</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-<!--                                        <tr th:each="userInTable: ${allUsers}">-->
-<!--                                            <td th:text="${userInTable.id}" style="width: 100px;"/>-->
-<!--                                            <td th:text="${userInTable.firstName}"-->
-<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
-<!--                                            <td th:text="${userInTable.lastName}"-->
-<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
-<!--                                            <td th:text="${userInTable.age}"-->
-<!--                                                style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
-<!--                                            <td th:text="${userInTable.Email}"-->
-<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
-<!--                                            <td style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-->
-<!--                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_ADMIN')}">ADMIN </span>-->
-<!--                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_USER')}">USER </span>-->
-<!--                                            </td>-->
-<!--                                            <td style="width: 100px">-->
-<!--                                                <button type="button" class="btn btn-info" >-->
-<!--                                                    Edit-->
-<!--                                                </button>-->
+                                        <tbody id="usersTable">
 
-<!--                                            <td style="width: 150px">-->
-
-<!--                                                <button type="button" class="btn btn-danger">-->
-<!--                                                    Delete-->
-<!--                                                </button>-->
-<!--                                        </tr>-->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+                        <!-- Edit Modal -->
+                        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form th:method="PATCH">
+                                            <label for="firstName" class="form-label" style="font-weight: bold;">First name</label>
+                                            <input type="text" class="form-control" id="efirstName">
+                                            <br>
+                                            <label for="lastName" class="form-label" style="font-weight: bold;">Last name</label>
+                                            <input type="text" class="form-control" id="elastName">
+                                            <br>
+                                            <label for="age" class="form-label" style="font-weight: bold;">Age</label>
+                                            <input type="number" class="form-control" id="eage">
+                                            <br>
+                                            <label for="email" class="form-label" style="font-weight: bold;">
+                                                Email</label>
+                                            <input type="text" class="form-control" id="eemail">
+                                            <br>
+                                            <label for="password" class="form-label" style="font-weight: bold;">Password</label>
+                                            <input type="password" class="form-control"id="epassword">
+                                            <br>
+                                            <div class="form-group">
+                                                <select class="form-control" id="eroleSelect" style="height: 60px" multiple>
+                                                    <option value="ROLE_USER">USER</option>
+                                                    <option value="ROLE_ADMIN">ADMIN</option>
+                                                </select>
+                                            </div>
+                                        </form>
 
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div id="tab2" role="tabpanel" aria-labelledby="tab2-tab" class="tab-pane fade show">
                             <div class="card">
                                 <div class="card-header">
@@ -118,7 +137,7 @@
                                 </div>
                                 <div class="card-body" style="text-align: center;">
                                     <div style="width: 350px; margin: 0 auto;">
-                                        <form id="newUserForm" onsubmit="return newUser(this)" method="post">
+                                        <form id="newUserForm" method="post">
                                             <label for="firstName" class="form-label" style="font-weight: bold;">
                                                 First name</label>
                                             <input type="text" class="form-control" name="firstName"
@@ -136,7 +155,7 @@
                                             <br>
                                             <label for="email" class="form-label" style="font-weight: bold;">
                                                 Email</label>
-                                            <input type="text" class="form-control" name="Email" id="Email">
+                                            <input type="text" class="form-control" name="email" id="email">
 
                                             <br>
                                             <label for="password" class="form-label" style="font-weight: bold;">
@@ -147,8 +166,9 @@
                                             <label class="form-label" style="font-weight: bold;">
                                                 Role</label>
                                             <div class="form-group">
-                                                <select class="form-control" name="roleSelect" id="roleSelect" style="height: 60px"
-                                                        multiple >
+                                                <select class="form-control" name="roleSelect" id="roleSelect"
+                                                        style="height: 60px"
+                                                        multiple>
                                                     <option value="ROLE_USER">USER</option>
                                                     <option value="ROLE_ADMIN">ADMIN</option>
                                                 </select>

@@ -46,6 +46,8 @@ public class RESTController {
         return userService.findAll().stream().map(this::convertToUserDTO)
                 .collect(Collectors.toList());
     }
+
+    @CrossOrigin
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable("id") Long id) {
         return convertToUserDTO(userService.findById(id));
