@@ -4,9 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Main page</title>
-    <!-- Vue JS -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.3"></script>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -16,12 +13,21 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
+
 </head>
 <body>
+<form >
+    <div style="background-color: darkgrey; padding: 10px;">
+        <span style="font-weight: bold; font-size: 18px;"> Info about auth user</span>
+        <button type="submit" class="btn btn-link text-muted" style="float: right;">Logout</button>
+    </div>
+</form>
+
+
 <div class="container-fluid">
     <div class="row">
         <!-- Left Side -->
@@ -61,73 +67,92 @@
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-hover" style="width: 1200px;">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">Id</th>
-                                        <th scope="col">First Name</th>
-                                        <th scope="col">First Name</th>
-                                        <th scope="col">Age</th>
-                                        <th scope="col">Email</th>
-                                        <th scope="col">Role</th>
-                                    </tr>
-                                    </thead>
-                                        <tbody id="app">
-                                        <tr v-for="user in users" :key="user.id">
-                                            <user-row :user="user" />
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">First Name</th>
+                                            <th scope="col">Age</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Role</th>
+                                            <th scope="col">Edit</th>
+                                            <th scope="col">Delete</th>
                                         </tr>
+                                        </thead>
+                                        <tbody>
+<!--                                        <tr th:each="userInTable: ${allUsers}">-->
+<!--                                            <td th:text="${userInTable.id}" style="width: 100px;"/>-->
+<!--                                            <td th:text="${userInTable.firstName}"-->
+<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
+<!--                                            <td th:text="${userInTable.lastName}"-->
+<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
+<!--                                            <td th:text="${userInTable.age}"-->
+<!--                                                style="width: 200px; max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
+<!--                                            <td th:text="${userInTable.Email}"-->
+<!--                                                style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"/>-->
+<!--                                            <td style="width: 200px; max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-->
+<!--                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_ADMIN')}">ADMIN </span>-->
+<!--                                                <span th:if="${#strings.contains(userInTable.roles, 'ROLE_USER')}">USER </span>-->
+<!--                                            </td>-->
+<!--                                            <td style="width: 100px">-->
+<!--                                                <button type="button" class="btn btn-info" >-->
+<!--                                                    Edit-->
+<!--                                                </button>-->
+
+<!--                                            <td style="width: 150px">-->
+
+<!--                                                <button type="button" class="btn btn-danger">-->
+<!--                                                    Delete-->
+<!--                                                </button>-->
+<!--                                        </tr>-->
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="tab2" role="tabpanel" aria-labelledby="tab2-tab" class="tab-pane fade">
+                        <div id="tab2" role="tabpanel" aria-labelledby="tab2-tab" class="tab-pane fade show">
                             <div class="card">
                                 <div class="card-header">
                                     <h5>Add new user</h5>
                                 </div>
                                 <div class="card-body" style="text-align: center;">
                                     <div style="width: 350px; margin: 0 auto;">
-                                        <form id="registration-form">
+                                        <form id="newUserForm" onsubmit="return newUser(this)" method="post">
                                             <label for="firstName" class="form-label" style="font-weight: bold;">
                                                 First name</label>
-                                            <input type="text" class="form-control"
-                                                   name="firstName" id="firstName">
-                                            <div style="color:red" id="firstName-error"></div>
+                                            <input type="text" class="form-control" name="firstName"
+                                                   id="firstName">
+
                                             <br>
                                             <label for="lastName" class="form-label" style="font-weight: bold;">
                                                 Last name</label>
-                                            <input type="text" class="form-control"
-                                                   name="lastName" id="lastName">
-                                            <div style="color:red" id="lastName-error"></div>
+                                            <input type="text" class="form-control" name="lastName"
+                                                   id="lastName">
                                             <br>
                                             <label for="age" class="form-label" style="font-weight: bold;">
                                                 Age</label>
                                             <input type="number" class="form-control" name="age" id="age">
-                                            <div style="color:red" id="age-error"></div>
                                             <br>
                                             <label for="email" class="form-label" style="font-weight: bold;">
                                                 Email</label>
-                                            <input type="text" class="form-control" name="email" id="email">
-                                            <div style="color:red" id="email-error"></div>
+                                            <input type="text" class="form-control" name="Email" id="Email">
+
                                             <br>
                                             <label for="password" class="form-label" style="font-weight: bold;">
                                                 Password</label>
-                                            <input type="password" class="form-control"
-                                                   name="password" id="password">
-                                            <div style="color:red" id="password-error"></div>
+                                            <input type="password" class="form-control" name="Password"
+                                                   id="Password">
                                             <br>
                                             <label class="form-label" style="font-weight: bold;">
                                                 Role</label>
                                             <div class="form-group">
-                                                <select class="form-control" name="roles" id="roles"
-                                                        style="height: 60px"
-                                                        multiple>
+                                                <select class="form-control" name="roleSelect" id="roleSelect" style="height: 60px"
+                                                        multiple >
                                                     <option value="ROLE_USER">USER</option>
                                                     <option value="ROLE_ADMIN">ADMIN</option>
                                                 </select>
                                             </div>
-                                            <div style="color:red" id="roles-error"></div>
                                             <button type="submit" class="btn btn-success" style="font-size: 20px">
                                                 Add new user
                                             </button>
@@ -165,10 +190,13 @@
         </div>
     </div>
 </div>
+
 <script src="../static/js/main.js"></script>
+
 <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 <script th:src="@{/webjars/popper.js/umd/popper.min.js}"></script>
 <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
 </body>
 </html>
 

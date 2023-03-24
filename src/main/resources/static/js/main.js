@@ -1,43 +1,47 @@
-var userApi = Vue.resource('http://localhost:8080/users/')
+function newUser(form) {
+    event.preventDefault();
 
-Vue.component('user-row', {
-    props: ['user', 'editMethod'],
-    computed: {
-        rolesString: function() {
-                const roleNames = this.user.roles.map(role => role.roleName);
-                return roleNames.join(', ');
+    // get form data
+        const firstName = form.firstName.value;
+        const lastName = form.lastName.value;
+        const age = form.age.value;
+        const email = form.Email.value;
+        const password = form.Password.value;
+        const roles = Array.from(form.roleSelect.selectedOptions).map(option => ({
+            roleName: option.value
+        }));
+
+    // create user object
+    const user = {
+        firstName: firstName,
+        lastName: lastName,
+        age: age,
+        email: email,
+        password: password,
+        roles: roles
+    };
+    console.log(user);
+
+    // send POST request with user data
+    fetch('http://localhost:8080/users/', {
+        method: 'POST',
+        body: JSON.stringify(user),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        },
+            // handle success response
+            console.log('New user created!');
+        })
+        .catch(error => {
+            // handle error
+            console.error('Error creating user:', error);
+        });
 
-    template: `
-      <tr>
-      <td>{{ user.id }}</td>
-      <td>{{ user.firstName }}</td>
-      <td>{{ user.lastName }}</td>
-      <td>{{ user.age }}</td>
-      <td>{{ user.email }}</td>
-      <td>{{ rolesString }}</td>
-      </tr>
-  `
-})
-
-Vue.component('users-list', {
-    props: ['users'],
-
-    template:
-        '<tbody><user-row v-for="user in users" :key="user.id" :user="user" /></tbody>',
-    created: function () {
-        userApi.get().then(result =>
-            result.json().then(data =>
-            data.forEach(user => this.users.push(user))))
-    }
-
-});
-
-var app = new Vue({
-    el: '#app',
-    template: '<users-list :users="users" />',
-    data: {
-        users: []
-    }
-});
+    // prevent default form submission behavior
+    return false;
+}
