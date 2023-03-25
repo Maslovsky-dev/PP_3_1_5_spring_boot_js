@@ -32,7 +32,7 @@ public class UserDTO {
     private String password;
 
     @NotEmpty(message = "Не выбрана ни одна роль")
-    private Set<Role> roles = new HashSet<>();
+    private Set<RoleDTO> roles = new HashSet<>();
 
     public String getPassword() {
         return password;
@@ -82,11 +82,11 @@ public class UserDTO {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public Set<RoleDTO> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<RoleDTO> roles) {
         this.roles = roles;
     }
 }
