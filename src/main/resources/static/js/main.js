@@ -94,22 +94,41 @@ const usersTable = document.getElementById('usersTable');
 usersTable.addEventListener('click', (event) => {
     const button = event.target;
     const row = button.parentElement.parentElement;
-    // if (button.classList.contains('btn-info')) { // Edit button clicked
-    // get the user data from the row
-    getUser(Number(row.cells[0].textContent), user => {
-        let editModal = document.getElementById('editModal');
-        editModal.querySelector('#efirstName').value = user.firstName;
-        editModal.querySelector('#elastName').value = user.lastName;
-        editModal.querySelector('#eage').value = user.age;
-        editModal.querySelector('#eemail').value = user.email;
-        // clear all selected options
-        let roleSelect = editModal.querySelector('#eroleSelect');
-        roleSelect.querySelectorAll('option').forEach(option => option.selected = false);
-        // set selected roles based on user's roles
-        roleSelect = editModal.querySelector('#eroleSelect');
-        user.roles.map(role => role.roleName).forEach(roleName => roleSelect.querySelector(`[value="${roleName}"]`).selected = true);
-        let editModalInstance = new bootstrap.Modal(editModal);
-        editModalInstance.show();
+    if (button.classList.contains('btn-info')) { // Edit button clicked
+        // get the user data from the row
+        getUser(Number(row.cells[0].textContent), user => {
+            let editModal = document.getElementById('editModal');
+            editModal.querySelector('#editfirstName').value = user.firstName;
+            editModal.querySelector('#editlastName').value = user.lastName;
+            editModal.querySelector('#editage').value = user.age;
+            editModal.querySelector('#editemail').value = user.email;
+            // clear all selected options
+            let roleSelect = editModal.querySelector('#editroleSelect');
+            roleSelect.querySelectorAll('option').forEach(option => option.selected = false);
+            // set selected roles based on user's roles
+            roleSelect = editModal.querySelector('#editroleSelect');
+            user.roles.map(role => role.roleName).forEach(roleName => roleSelect.querySelector(`[value="${roleName}"]`).selected = true);
+            let editModalInstance = new bootstrap.Modal(editModal);
+            editModalInstance.show();
         });
+    } else if ((button.classList.contains('btn-danger'))) {
+// get the user data from the row
+        getUser(Number(row.cells[0].textContent), user => {
+            let deleteModal = document.getElementById('deleteModal');
+            deleteModal.querySelector('#deletefirstName').value = user.firstName;
+            deleteModal.querySelector('#deletelastName').value = user.lastName;
+            deleteModal.querySelector('#deleteage').value = user.age;
+            deleteModal.querySelector('#deleteemail').value = user.email;
+            // clear all selected options
+            let roleSelect = deleteModal.querySelector('#deleteroleSelect');
+            roleSelect.querySelectorAll('option').forEach(option => option.selected = false);
+            // set selected roles based on user's roles
+            roleSelect = deleteModal.querySelector('#deleteroleSelect');
+            user.roles.map(role => role.roleName).forEach(roleName => roleSelect.querySelector(`[value="${roleName}"]`).selected = true);
+            let deleteModalInstance = new bootstrap.Modal(deleteModal);
+            deleteModalInstance.show();
+        });
+    }
+
     });
 
