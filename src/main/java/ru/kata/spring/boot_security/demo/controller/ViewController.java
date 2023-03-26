@@ -9,15 +9,21 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 
 @Controller
-public class AdminController {
+public class ViewController {
 
-	//Страница админа
 	@GetMapping(value = "/admin")
 	 public String adminPage(Model model) {
-//		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//		User user = (User) authentication.getPrincipal();
-//		model.addAttribute("authUser", user);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		model.addAttribute("authUser", user);
 		return "admin";
 	 }
+	@GetMapping(value = "/user")
+	public String userPage(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		model.addAttribute("authUser", user);
+		return "user";
+	}
 
 }

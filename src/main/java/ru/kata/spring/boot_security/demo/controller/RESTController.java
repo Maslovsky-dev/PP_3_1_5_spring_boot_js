@@ -40,19 +40,17 @@ public class RESTController {
         this.userValidator = userValidator;
         this.modelMapper = modelMapper;
     }
-    @CrossOrigin
+
     @GetMapping("/")
     public List<UserDTO> getAllUsers() {
         return userService.findAll().stream().map(this::convertToUserDTO)
                 .collect(Collectors.toList());
     }
 
-    @CrossOrigin
     @GetMapping("/{id}")
     public UserDTO getUserById(@PathVariable("id") Long id) {
         return convertToUserDTO(userService.findById(id));
     }
-    @CrossOrigin
     @PostMapping("/")
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         userValidator.validate(convertToUser(userDTO), bindingResult);
@@ -64,7 +62,6 @@ public class RESTController {
         userService.save(convertToUser(userDTO));
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @CrossOrigin
     @PatchMapping("/{id}")
     public ResponseEntity<HttpStatus> update(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -75,7 +72,6 @@ public class RESTController {
         userService.save(convertToUser(userDTO));
         return ResponseEntity.ok(HttpStatus.OK);
     }
-    @CrossOrigin
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<HttpStatus> delete(Model model, @PathVariable("id") Long id) {
         userService.deleteById(id);
