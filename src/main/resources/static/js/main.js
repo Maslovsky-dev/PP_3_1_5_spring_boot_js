@@ -116,102 +116,112 @@ usersTable.addEventListener('click', (event) => {
     });
 });
 
+const editModal = document.getElementById('editModal');
+const editModalInstance = new bootstrap.Modal(editModal);
 function editProcessing(user,id) {
-    let editModal = document.getElementById('editModal');
+    editModal.querySelector('#editId').value = id;
     editModal.querySelector('#editfirstName').value = user.firstName;
     editModal.querySelector('#editlastName').value = user.lastName;
     editModal.querySelector('#editage').value = user.age;
     editModal.querySelector('#editemail').value = user.email;
     // clear all selected options
     let roleSelect = editModal.querySelector('#editroleSelect');
+    //Reset role selector
     roleSelect.querySelectorAll('option').forEach(option => option.selected = false);
     // set selected roles based on user's roles
     roleSelect = editModal.querySelector('#editroleSelect');
     user.roles.map(role => role.roleName).forEach(roleName => roleSelect.querySelector(`[value="${roleName}"]`).selected = true);
-    let editModalInstance = new bootstrap.Modal(editModal);
     editModalInstance.show();
-
-    // add event listener to the Edit button inside the modal
-    editModal.querySelector('#editButton').addEventListener('click', (event) => {
-        event.preventDefault();
-        // get the updated user data from the form
-        const updatedUser = {
-            id: id,
-            firstName: editModal.querySelector('#editfirstName').value,
-            lastName: editModal.querySelector('#editlastName').value,
-            age: editModal.querySelector('#editage').value,
-            email: editModal.querySelector('#editemail').value,
-            password: editModal.querySelector('#editpassword').value,
-            roles: Array.from(editModal.querySelectorAll('#editroleSelect option:checked'), option => ({
-                roleName: option.value
-            }))
-        };
-        // send a PATCH request to update the user data
-        fetch(`http://localhost:8080/users/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedUser)
-        }).then(response => {
-            if (response.ok) {
-                // close the modal if the request was successful
-                editModalInstance.hide();
-                // reload the table to show the updated user data
-                getAllUsers();
-            } else {
-                // display an error message if the request was not successful
-                console.error('Error updating user:', response);
-                alert('Error updating user');
-            }
-        })
-            .catch(error => {
-                // display an error message if the request failed
-                console.error('Error updating user:', error);
-                alert('Error updating user');
-            });
-    })
 }
+
+// add event listener to the Edit button inside the modal
+editModal.querySelector('#editButton').addEventListener('click', (event) => {
+    event.preventDefault();
+    // get the updated user data from the form
+    const updatedUser = {
+        //get Id from html hidden field
+        id: editModal.querySelector('#editId').value,
+        firstName: editModal.querySelector('#editfirstName').value,
+        lastName: editModal.querySelector('#editlastName').value,
+        age: editModal.querySelector('#editage').value,
+        email: editModal.querySelector('#editemail').value,
+        password: editModal.querySelector('#editpassword').value,
+        roles: Array.from(editModal.querySelectorAll('#editroleSelect option:checked'), option => ({
+            roleName: option.value
+        }))
+    };
+    // send a PATCH request to update the user data
+    fetch(`http://localhost:8080/users/${updatedUser.id}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(updatedUser)
+    }).then(response => {
+        if (response.ok) {
+            // close the modal if the request was successful
+            editModalInstance.hide();
+            // reload the table to show the updated user data
+            getAllUsers();
+        } else {
+            // display an error message if the request was not successful
+            console.error('Error updating user:', response);
+            alert('Error updating user');
+        }
+    })
+        .catch(error => {
+            // display an error message if the request failed
+            console.error('Error updating user:', error);
+            alert('Error updating user');
+        });
+})
+
+
+const deleteModal = document.getElementById('deleteModal');
+const deleteModalInstance = new bootstrap.Modal(deleteModal);
 
 function deleteProcessing(user, id) {
     console.log("deleteProcessing" + id);
-    let deleteModal = document.getElementById('deleteModal');
+    deleteModal.querySelector('#deleteId').value = id;
     deleteModal.querySelector('#deletefirstName').value = user.firstName;
     deleteModal.querySelector('#deletelastName').value = user.lastName;
     deleteModal.querySelector('#deleteage').value = user.age;
     deleteModal.querySelector('#deleteemail').value = user.email;
     // clear all selected options
     let roleSelect = deleteModal.querySelector('#deleteroleSelect');
+    //reset role selector
     roleSelect.querySelectorAll('option').forEach(option => option.selected = false);
     // set selected roles based on user's roles
     roleSelect = deleteModal.querySelector('#deleteroleSelect');
     user.roles.map(role => role.roleName).forEach(roleName => roleSelect.querySelector(`[value="${roleName}"]`).selected = true);
-    let deleteModalInstance = new bootstrap.Modal(deleteModal);
     deleteModalInstance.show();
-    deleteModal.querySelector('#deleteButton').addEventListener('click', (event) => {
-        event.preventDefault();
-        console.log(id);
-        // send a PATCH request to update the user data
-        fetch(`http://localhost:8080/users/${id}`, {
-            method: 'DELETE'
-        }).then(response => {
-            if (response.ok) {
-                // close the modal if the request was successful
-                deleteModalInstance.hide();
-                // reload the table to show the updated user data
-                getAllUsers();
-            } else {
-                // display an error message if the request was not successful
-                console.error('Error updating user:', response);
-                alert('Error updating user');
-            }
-        })
-            .catch(error => {
-                // display an error message if the request failed
-                console.error('Error updating user:', error);
-                alert('Error updating user');
-            });
-    });
+
 }
+// add event listener to the Delete button inside the modal
+deleteModal.querySelector('#deleteButton').addEventListener('click', (event) => {
+    event.preventDefault();
+    //get Id from html hidden field
+    console.log("Delete button listener" + deleteModal.querySelector('#deleteId').value,);
+    // send a PATCH request to update the user data
+    fetch(`http://localhost:8080/users/${deleteModal.querySelector('#deleteId').value}`, {
+        method: 'DELETE'
+    }).then(response => {
+        if (response.ok) {
+            // close the modal if the request was successful
+            deleteModalInstance.hide();
+            // reload the table to show the updated user data
+            getAllUsers();
+        } else {
+            // display an error message if the request was not successful
+            console.error('Error updating user:', response);
+            alert('Error updating user');
+        }
+    })
+        .catch(error => {
+            // display an error message if the request failed
+            console.error('Error updating user:', error);
+            alert('Error updating user');
+        });
+});
 
 
